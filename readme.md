@@ -1,10 +1,5 @@
 # Source prediction
 
-A brief description of what this project does and who it's for.
-
-## Description
-
-Longer description of the project. What is the purpose of the project? What problem does it solve? How can users get started with the project?
 
 ## Getting Started
 
