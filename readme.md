@@ -26,27 +26,33 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/gzhoubioinf/SourcePrediction.git
+```
+
 
 Navigate to the project directory:
 
 ```bash
 cd yourprojectname
+```
 
 Create a virtual environment:
 
 ```bash
 python -m venv .venv
+```
 
 
 Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
 Running the Application
 To run the application, execute the following command:
 
 ```bash
 streamlit run main.py
+```
 
 The Streamlit app will start and you can view it in your web browser at http://localhost:8501.
 
