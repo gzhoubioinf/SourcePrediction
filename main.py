@@ -1,10 +1,12 @@
-# !/user/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import numpy as np
 import streamlit as st
 import pandas as pd
 import pickle as pkl
 from ml_predict import modelprediction
+import matplotlib.pyplot as plt
+
 #
 # "class_label" : {
 #     "HA": 1,
@@ -27,7 +29,6 @@ if uploaded_file is not None:
     lines = decoded_content.splitlines()
     if lines[0].startswith('>'):
         title = lines[0]
-        print(title)
 
 else:
     # User copied and pasted the content
@@ -42,41 +43,40 @@ else:
 
 if uploaded_file or text_input:
     pred = modelprediction(file_contents)
-    st.write(title)
     pred_haaa = pred['pred_haaa']
     pred_hhaa = pred['pred_hhaa']
     pred_hahh = pred['pred_hahh']
-    # pred = {
-    #     'pred_haaa': pred_haaa,
-    #     'pred_hhaa': pred_hhaa,
-    #     'pred_hahh': pred_hahh
-    # }
-    # pred = {
-    #     'pred_class': pred_class,
-    #     'pred_probs': pred_probs
-    # }
-    st.write('-----HA vs AA-----')
-    st.write('predicted class: ', pred_haaa['pred_class'])
-    st.write('probabilities for each class')
-    for key, value in pred_haaa['pred_probs'].items():
-        st.write(key,':',value)
+    #st.write(  pred_hhaa['pred_probs']['HH']) 
+    species = ("HAAA", "HHAA", "HAHH")
+    pred_dict = {
+        'HH': (0, pred_hhaa['pred_probs']['HH'], pred_hahh['pred_probs']['HH']),
+        'AA': (pred_haaa['pred_probs']['AA'], pred_hhaa['pred_probs']['AA'], 0),
+        'HA': (pred_haaa['pred_probs']['HA'], 0, pred_hahh['pred_probs']['HA'])
+    }
 
-    # st.write('HH vs AA')
-    # st.write(pred['pred_hhaa'])
+    x = np.arange(len(species))  # label locations
+    width = 0.25  # width of the bars
+    fig, ax = plt.subplots()
 
-    st.write('-----HH vs AA-----')
-    st.write('predicted class: ', pred_hhaa['pred_class'])
-    st.write('probabilities for each class')
-    for key, value in pred_hhaa['pred_probs'].items():
-        st.write(key, ':', value)
+    for i, (key, values) in enumerate(pred_dict.items()):
+        rects = ax.bar(x + i * width, values, width, label=key)
+        ax.bar_label(rects, padding=3)
 
-    # st.write('HA vs HH')
-    # st.write(pred['pred_hahh'])
+    # Customizing the plot
+    ax.set_ylabel('Predicted Probability')
+    ax.set_title('Source Prediction for ' + title)
+    ax.set_xticks(x + width, species)
+    ax.legend(loc='upper left')
+    ax.set_ylim(0, 1)  # Assuming probabilities range from 0 to 1
 
-    st.write('-----HA vs HH-----')
-    st.write('predicted class: ', pred_hahh['pred_class'])
-    st.write('probabilities for each class')
-    for key, value in pred_hahh['pred_probs'].items():
-        st.write(key, ':', value)
+    st.pyplot(fig)  # Display the plot in Streamlit
 
-
+    # # Optional: Display the prediction results as text
+    # st.write('--- Predictions ---')
+    # st.write(f'Predictions for {title}')
+    # # for pred_type, pred_values in pred.items():
+    # #     st.write(f'-----{pred_type}-----')
+    # #     st.write('Predicted class:', pred_values['pred_class'])
+    # #     st.write('Probabilities for each class:')
+    # #     for key, value in pred_values['pred_probs'].items():
+    # #         st.write(f'{key}: {value}')
