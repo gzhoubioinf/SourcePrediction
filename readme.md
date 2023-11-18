@@ -3,7 +3,8 @@
 
 ## Getting Started
 
-These instructions will help you set up a copy of the project running on your local machine for development and testing purposes.
+This package contains a model trained using XGBoost, designed for predicting the host source of E. coli. 
+These instructions will help you set up a copy of the project running on your local machine for development and testing purposes
 
 ### Prerequisites
 
@@ -27,7 +28,7 @@ git clone https://github.com/gzhoubioinf/SourcePrediction.git
 Navigate to the project directory:
 
 ```bash
-cd yourprojectname
+cd SourcePrediction
 ```
 
 Create a virtual environment:
@@ -56,7 +57,7 @@ The Streamlit app will start and you can view it in your web browser at http://l
 
 ## Usage
 
-Provide examples of how to use the project. Include screenshots or code blocks as necessary.
+We provide a file named 'genome_sequence_NZ_CP124398.1.txt' containing a genome sequence to test the model.
 
 ## Contributing
 
