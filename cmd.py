@@ -3,6 +3,7 @@
 from ml_predict import process_cmd
 import argparse
 
+#./cmd.py -i inputfile -0 outputfile
 
 if __name__ == "__main__":
     # Create the argument parser

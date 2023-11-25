@@ -49,7 +49,7 @@ pip install -r requirements.txt
 ```
 
 There are two ways to run the Application: the command line and the app.
-* Run using the following commmands:
+* For example, run using the following commmands and the ouput will be saved in the test.pdf file
 
 ```bash
 chmod 777 cmd.py
