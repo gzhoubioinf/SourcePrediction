@@ -1,9 +1,9 @@
 # !/user/bin/env python3
 # -*- coding: utf-8 -*-
-
 from scipy.sparse import coo_matrix
 import joblib
-
+from matplotlib import pyplot as plt
+import numpy as np
 
 #
 # import sys
@@ -80,3 +80,84 @@ def modelprediction(gene_seq: str):
     }
 
     return pred
+
+
+
+def process(uploaded_file, text_input):
+
+    if uploaded_file is not None:
+        # User uploaded a file
+        file_contents = uploaded_file.read()
+        # Decode the binary content into a text format
+        decoded_content = file_contents.decode('utf-8')
+        # Split the content into lines
+        lines = decoded_content.splitlines()
+        if lines[0].startswith('>'):
+            title = lines[0]
+
+    else:
+        # User copied and pasted the content
+        if text_input.startswith('>'):
+            text = text_input.split('\n')
+            title = text[0]
+            file_contents = ''.join(text[1:])
+        else:
+            title = 'Your gene sequence'
+            file_contents = text_input
+
+    return plot_probability(file_contents,title)
+
+
+
+
+def process_cmd(input_file, output):
+
+    # User uploaded a file
+    with open(input_file,'rb') as f:
+        file_contents = f.read()
+    # Decode the binary content into a text format
+    decoded_content = file_contents.decode('utf-8')
+    # Split the content into lines
+
+    lines = decoded_content.splitlines()
+    # print(file_contents)
+    if lines[0].startswith('>'):
+        title = lines[0]
+    else:
+        title = 'Gene sequence'
+
+
+    fig = plot_probability(file_contents,title)
+    fig.savefig(output, format='pdf')
+
+    
+
+def plot_probability(file_contents,title):
+    pred = modelprediction(file_contents)
+    pred_haaa = pred['pred_haaa']
+    pred_hhaa = pred['pred_hhaa']
+    pred_hahh = pred['pred_hahh']
+    #st.write(  pred_hhaa['pred_probs']['HH']) 
+    species = ("HAAA", "HHAA", "HAHH")
+    pred_dict = {
+        'HH': (0, pred_hhaa['pred_probs']['HH'], pred_hahh['pred_probs']['HH']),
+        'AA': (pred_haaa['pred_probs']['AA'], pred_hhaa['pred_probs']['AA'], 0),
+        'HA': (pred_haaa['pred_probs']['HA'], 0, pred_hahh['pred_probs']['HA'])
+    }
+
+    x = np.arange(len(species))  # label locations
+    width = 0.25  # width of the bars
+    fig, ax = plt.subplots()
+
+    for i, (key, values) in enumerate(pred_dict.items()):
+        rects = ax.bar(x + i * width, values, width, label=key)
+        ax.bar_label(rects, padding=3)
+
+    # Customizing the plot
+    ax.set_ylabel('Predicted Probability')
+    ax.set_title('Source Prediction for ' + title)
+    ax.set_xticks(x + width, species)
+    ax.legend(loc='upper left')
+    ax.set_ylim(0, 1)  # Assuming probabilities range from 0 to 1
+
+    return fig 

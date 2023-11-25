@@ -1,13 +1,12 @@
 # Source prediction
 
-
 ## Getting Started
 
 This package contains a model trained using XGBoost, designed for predicting the host source of E. coli. 
 These instructions will help you set up a copy of the project running on your local machine for development and testing purposes
 
 ### Prerequisites
-
+	
 Before you begin, ensure you have met the following requirements:
 
 - You have a `Windows/Linux/Mac` machine.
@@ -18,36 +17,47 @@ Before you begin, ensure you have met the following requirements:
 
 Follow these steps to get your development environment running:
 
-Clone the repository:
+* Clone the repository:
 
 ```bash
 git clone https://github.com/gzhoubioinf/SourcePrediction.git
 ```
 
 
-Navigate to the project directory:
+* Navigate to the project directory:
 
 ```bash
 cd SourcePrediction
 ```
 
-Create a virtual environment:
+* Create a virtual environment:
 
 ```bash
 python -m venv .venv
 ```
-Activate virtual environment
+
+* Activate virtual environment
+
 ```bash
 source .venv/bin/activate
 ```
 
-Install the required dependencies:
+* Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
-Running the Application
-To run the application, execute the following command:
+
+There are two ways to run the Application: the command line and the app.
+* Run using the following commmands:
+
+```bash
+chmod 777 cmd.py
+./cmd.py -i data/genome_sequence_NZ_CP124398.1.txt -o data/test.pdf
+```
+
+
+* Streamlite application. The graphical interface can be run via streamlit. You need to navigate into the streamlit directory and launch the application, usin the following command:
 
 ```bash
 streamlit run main.py
